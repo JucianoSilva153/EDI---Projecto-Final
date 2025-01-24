@@ -1,6 +1,9 @@
-#include "./Produto/produto.h"
-#include "./Maquina/Maquina.h"
-#include "./Fila/fila.h"
+#ifndef TAPETE_H
+#define TAPETE_H
+
+#include "../Produto/produto.h"
+#include "../Maquina/Maquina.h"
+#include "../Fila/fila.h"
 
 typedef struct tapete
 {
@@ -13,5 +16,6 @@ Tapete* InicializarTapete();
 
 char* AdicionarProduto(Tapete* tapete, Produto* produto);
 int ValidarProduto( Produto* produto);
-char* EncaminharProdutos(Tapete* tapete, Maquinas maquinas);
-void ImprimirTapete(Tapete* tapete);
+char* EncaminharProdutos(Tapete* tapete, Maquinas *maquinas);
+char* ImprimirTapete(Tapete* tapete);
+#endif

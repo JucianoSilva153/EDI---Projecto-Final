@@ -1,5 +1,6 @@
-#include "./Produto/produto.h"
-#include "./Produto/produto.c"
+#ifndef DESCARTE_H
+#define DESCARTE_H
+#include "../Produto/produto.h"
 
 typedef struct descarte
 {
@@ -10,6 +11,9 @@ typedef struct descarte
 typedef struct descartados
 {
     int quantidade;
+    int produtosPA;
+    int produtosPB;
+    int produtosPC;
     Descarte *descarte;
 } Descartados;
 
@@ -17,4 +21,5 @@ typedef struct descartados
 Descarte *InicializarDescarte();
 Descartados *InicializarDescartados();
 
-Descartados *DescartarProduto(Descartados *descartados, Produto *produto);
+char *DescartarProduto(Descartados *descartados, Produto *produto);
+#endif

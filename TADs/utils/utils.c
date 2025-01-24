@@ -1,6 +1,8 @@
-#include <stdio.h>;
-#include <stdlib.h>;
-#include "./Maquina/maquina.h";
+#include <stdio.h>
+#include <stdlib.h>
+
+#include "../Tapete/tapete.h"
+#include "../Maquina/maquina.h"
 
 // Retorna a maquina que tenha a menor fila dado um determinado tipo de produto
 Maquina *RetornarMaquinaPeloProduto(Maquinas *maquinas, char *tipoProduto)
@@ -58,4 +60,40 @@ Maquina *RetornarMaquinaPeloProduto(Maquinas *maquinas, char *tipoProduto)
     }
 
     return maquinaMenorFila;
+}
+
+// Remove um produto do tapete e retorna ele
+Produto *RemoverProdutoDoTapete(Tapete **tapete)
+{
+    if ((*tapete)->Produto == NULL)
+    {
+        return NULL; // Tapete vazio
+    }
+
+    Produto *produtoRemovido = (*tapete)->Produto;
+
+    if ((*tapete)->prox == (*tapete))
+    {
+        Produto *produtoRemovido = (*tapete)->Produto; // Salva o produto
+        free(tapete);                               // Libera a memória
+        tapete = NULL;                              // Atualiza o ponteiro para NULL
+        return produtoRemovido;                     // Retorna o produto
+    }
+    else
+    {
+        Tapete *ultimo = (*tapete);
+        while (ultimo->prox != (*tapete))
+        {
+            ultimo = ultimo->prox; // Encontra o último nó
+        }
+
+        produtoRemovido = (*tapete)->Produto; // Salva o produto removido
+        Tapete *temp = (*tapete);             // Nó atual a ser removido
+
+        ultimo->prox = (*tapete)->prox; // Atualiza o próximo do último nó
+        (*tapete) = (*tapete)->prox;       // Move o início do tapete para o próximo nó
+        free(temp);                  // Libera o nó atual
+    }
+
+    return produtoRemovido;
 }

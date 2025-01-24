@@ -3,20 +3,25 @@
 
 #include "tapete.h"
 
-#include "../Produto/produto.c";
-#include "../Produto/produto.h";
+#include "../Utils/utils.c"
 
-#include "../Fila/fila.c";
-#include "../Fila/fila.h";
+#include "../Produto/produto.h"
 
-#include "../Descarte/descarte.c";
-#include "../Descarte/descarte.h";
+#include "../Fila/fila.h"
+
+#include "../Descarte/descarte.c"
+
+// Cria a Lista de Descarte previamente
+Descartados *ListaDescarte = NULL;
 
 // Inicializa o tapete
 Tapete *InicializarTapete()
 {
     Tapete *novoTapete = (Tapete *)malloc(sizeof(Tapete));
-    if (novoTapete)
+    ListaDescarte = InicializarDescartados();
+
+    // Verifica se o tapete e a lista de descarte foram criados com sucesso
+    if (novoTapete && ListaDescarte)
     {
         novoTapete->Produto = NULL;
         novoTapete->prox = novoTapete;
@@ -59,6 +64,7 @@ char *AdicionarProduto(Tapete *tapete, Produto *novoProduto)
                 novoTapete->prox = tapete;
                 aux->prox = novoTapete;
 
+                free(aux);
                 return "Produto Adicionado!!";
             }
         }
@@ -99,8 +105,9 @@ int ValidarProduto(Produto *produto)
     return 1;
 }
 
+
 // Encaminha os produtos para as máquinas correspondentes
-char *EncaminharProdutos(Tapete *tapete, Maquinas maquinas)
+char *EncaminharProdutos(Tapete *tapete, Maquinas *maquinas)
 {
     Tapete *aux = tapete;
     while (aux->prox != tapete)
@@ -108,6 +115,7 @@ char *EncaminharProdutos(Tapete *tapete, Maquinas maquinas)
         if (ValidarProduto(aux->Produto) == 0)
         {
             // Manda produto para a Lista de descarte
+            DescartarProduto(ListaDescarte, aux->Produto);
             return "Produto Invalido, descartado!!";
         }
 
@@ -117,12 +125,12 @@ char *EncaminharProdutos(Tapete *tapete, Maquinas maquinas)
             return "Nenhuma Maquina Disponivel";
         }
 
-        return EncaminharProduto(maquina->Fila, aux->Produto);
+        return EncaminharProduto(maquina->Fila, RemoverProdutoDoTapete(&tapete));
     }
 }
 
 // Imprime os produtos no tapete
-void ImprimirTapete(Tapete *tapete)
+char* ImprimirTapete(Tapete *tapete)
 {
     if (tapete->Produto == NULL)
     {

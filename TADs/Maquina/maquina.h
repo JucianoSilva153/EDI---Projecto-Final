@@ -1,4 +1,7 @@
-#include "./Fila/fila.h"
+#ifndef MAQUINA_H
+#define MAQUINA_H
+
+#include "../Fila/fila.h"
 
 typedef struct maquina
 {
@@ -17,8 +20,12 @@ typedef struct maquinas
 
 
 Maquina* InicializarMaquina();
+Maquina* CriarMaquina(char* tipo);
+
 Maquinas* InicializarMaquinas();
+Maquinas* AdicionarMaquina(Maquinas* maquinas, Maquina* maquina);
+
 char* EmbalarProduto(Maquina* maquina);
 char* ImprimirFila(Maquina* maquina);
 
-Maquinas* AdicionarMaquina(Maquinas* maquinas, Maquina* maquina);
+#endif

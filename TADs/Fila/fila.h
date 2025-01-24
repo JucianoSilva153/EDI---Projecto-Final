@@ -1,4 +1,13 @@
-#include "./Produto/produto.h"
+#ifndef FILA_H
+#define FILA_H
+
+#include "../Produto/produto.h"
+
+typedef struct no
+{
+    Produto *Produto;
+    struct no *prox;
+} No;
 
 typedef struct fila
 {
@@ -7,10 +16,6 @@ typedef struct fila
     No *fim;
 } Fila;
 
-typedef struct no
-{
-    Produto *Produto;
-    struct no *prox;
-} No;
+char *EncaminharProduto(Fila *fila, Produto *produto);
 
-char* EncaminharProduto(Fila* fila, Produto* produto);
+#endif
