@@ -32,16 +32,19 @@ Tapete *InicializarTapete()
 }
 
 // Adiciona um produto ao tapete
-char *AdicionarProduto(Tapete *tapete, Produto *novoProduto)
+Tapete *AdicionarProduto(Tapete *tapete, Produto *novoProduto)
 {
     Tapete *novoTapete = InicializarTapete();
-    if (novoTapete == NULL)
-        return "Erro ao adicionar Produto";
+    if (novoTapete == NULL){
+        printf("Erro ao adicionar produto ao tapete\n");
+        return tapete;
+    }
 
     if (tapete->Produto == NULL)
     {
         tapete->Produto = novoProduto;
-        return "Produto Adicionado!!";
+        printf("Produto Adicionado!!\n");
+        return tapete;
     }
     else
     {
@@ -51,7 +54,8 @@ char *AdicionarProduto(Tapete *tapete, Produto *novoProduto)
             novoTapete->prox = tapete;
             tapete->prox = novoTapete;
 
-            return "Produto Adicionado!!";
+            printf("Produto Adicionado!!\n");
+            return tapete;
         }
 
         Tapete *aux = tapete;
@@ -64,13 +68,14 @@ char *AdicionarProduto(Tapete *tapete, Produto *novoProduto)
                 novoTapete->prox = tapete;
                 aux->prox = novoTapete;
 
-                free(aux);
-                return "Produto Adicionado!!";
+                printf("Produto Adicionado!!\n");
+                return tapete;
             }
         }
     }
 
-    return "Ocorreu um erro inesperado ao tentar adicionar Produto";
+    printf("Ocorreu um erro inesperado ao tentar adicionar Produto\n");
+    return tapete;
 }
 
 // Verifica a existencia de algum produto fora do padrao
@@ -130,19 +135,21 @@ char *EncaminharProdutos(Tapete *tapete, Maquinas *maquinas)
 }
 
 // Imprime os produtos no tapete
-char* ImprimirTapete(Tapete *tapete)
+void ImprimirTapete(Tapete *tapete)
 {
     if (tapete->Produto == NULL)
     {
-        return "Tapete Vazio";
+        printf("Tapete Vazio!!\n");
+        return;
     }
 
     int count = 1;
     Tapete *aux = tapete;
     while (aux->prox != tapete)
     {
-        printf("Produto-%d | Tipo %s | Peso %f\n", count, aux->Produto->Tipo, aux->Produto->Peso);
+        printf("%d - %s | Tipo %s | Peso %f\n", count, aux->Produto->Nome, aux->Produto->Tipo, aux->Produto->Peso);
         aux = aux->prox;
+        count++;
     }
 
     printf("\n\n%d produtos no tapete!", count);

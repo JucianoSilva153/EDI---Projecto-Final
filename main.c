@@ -13,6 +13,8 @@
 #include "TADs/Fila/fila.h"
 #include "TADs/Fila/fila.c"
 
+#include "TADs/utils/Ficheiros.c"
+
 Maquinas *listaMaquinas;
 Tapete *tapeteRolante;
 
@@ -46,6 +48,7 @@ void AdicionarMaquinas()
 
 void AdicionarProdutosAutomaticamente()
 {
+    tapeteRolante = CarregarProdutos(tapeteRolante);
 }
 
 void AdicionarProdutosManualmente()
@@ -60,7 +63,7 @@ void AdicionarProdutosManualmente()
 
         printf("Nome: ");
         scanf("%s", nome);
-        
+
         printf("Tipo: ");
         scanf("%s", tipo);
 
@@ -97,6 +100,8 @@ int main()
 {
     listaMaquinas = InicializarMaquinas();
     tapeteRolante = InicializarTapete();
+
+    ImprimirTapete(tapeteRolante);
 
     int opcoes;
 

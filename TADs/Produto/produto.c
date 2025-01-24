@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include "produto.h"
 
@@ -28,8 +29,8 @@ Produto *CriarProduto(char* nome ,char *tipo, float peso)
 
     if (produto)
     {
-        produto->Nome = nome;
-        produto->Tipo = tipo;
+        produto->Nome = strdup(nome);
+        produto->Tipo = strdup(tipo);
         produto->Peso = peso;
 
         return produto;

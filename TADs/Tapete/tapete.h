@@ -14,8 +14,8 @@ typedef struct tapete
 
 Tapete* InicializarTapete();
 
-char* AdicionarProduto(Tapete* tapete, Produto* produto);
+Tapete* AdicionarProduto(Tapete* tapete, Produto* produto);
 int ValidarProduto( Produto* produto);
 char* EncaminharProdutos(Tapete* tapete, Maquinas *maquinas);
-char* ImprimirTapete(Tapete* tapete);
+void ImprimirTapete(Tapete* tapete);
 #endif
