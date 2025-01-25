@@ -25,6 +25,10 @@ Maquina* CriarMaquina(char* tipo);
 Maquinas* InicializarMaquinas();
 Maquinas* AdicionarMaquina(Maquinas* maquinas, Maquina* maquina);
 
+void ImprimirMaquinas(Maquinas* maquinas);
+Maquina* SelecionarMaquina(Maquinas *maquinas, int posicao);
+
+
 char* EmbalarProduto(Maquina* maquina);
 char* ImprimirFila(Maquina* maquina);
 

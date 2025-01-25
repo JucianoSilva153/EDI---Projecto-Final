@@ -21,5 +21,6 @@ typedef struct descartados
 Descarte *InicializarDescarte();
 Descartados *InicializarDescartados();
 
+
 char *DescartarProduto(Descartados *descartados, Produto *produto);
 #endif

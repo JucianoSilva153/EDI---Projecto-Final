@@ -21,7 +21,7 @@ Maquina *InicializarMaquina()
         maquina->Tipo = NULL;
         maquina->TempoEmbalamento = 0;
         maquina->ProdutosEmbalados = 0;
-        // maquina->Fila = Inicializar();
+        maquina->Fila = InicializaFila();
 
         return maquina;
     }
@@ -138,6 +138,50 @@ char *EmbalarProduto(Maquina *maquina)
     maquina->ProdutosEmbalados++;
 
     return "Produto Embalado";
+}
+
+void ImprimirMaquinas(Maquinas *maquinas)
+{
+    if (maquinas->Maquina == NULL)
+    {
+        printf("Nenhuma Maquina Disponivel\n");
+        return;
+    }
+
+    int count = 1;
+    Maquinas *aux = maquinas;
+    while (aux->prox != NULL)
+    {
+        printf("%d - %s | Tipo %s | Produtos Embalados %d\n", count, aux->Maquina->Nome, aux->Maquina->Tipo, aux->Maquina->ProdutosEmbalados);
+        count++;
+        aux = aux->prox;
+
+        if (aux->prox == NULL)
+        {
+            count++;
+            printf("%d - %s | Tipo %s | Produtos Embalados %d\n", count, aux->Maquina->Nome, aux->Maquina->Tipo, aux->Maquina->ProdutosEmbalados);
+            break;
+        }
+    }
+}
+
+Maquina *SelecionarMaquina(Maquinas *maquinas, int posicao)
+{
+    Maquinas *aux = maquinas;
+    int count = 1;
+    while (aux->prox != NULL)
+    {
+        if (count == posicao)
+        {
+            if (aux->Maquina == NULL)
+                return NULL;
+            return aux->Maquina;
+        }
+        count++;
+        aux = aux->prox;
+    }
+
+    return NULL;
 }
 
 // Imprime a fila de uma maquina

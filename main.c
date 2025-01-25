@@ -43,7 +43,7 @@ void AdicionarMaquinas()
         listaMaquinas = AdicionarMaquina(listaMaquinas, CriarMaquina("MC"));
     }
 
-    printf("Maquinas Configuradas com Sucesso\n\n");
+    printf("\nMaquinas Configuradas com Sucesso\n\n");
 }
 
 void AdicionarProdutosAutomaticamente()
@@ -72,7 +72,7 @@ void AdicionarProdutosManualmente()
 
         AdicionarProduto(tapeteRolante, CriarProduto(nome, tipo, peso));
 
-        printf("\n\nDeseja Adicionar mais produtos? (0 - Sim | 1 - Nao)\n\n");
+        printf("\n\nDeseja Adicionar mais produtos? (0 - Sim | 1 - Nao)\n> ");
         scanf("%d", &continuar);
 
     } while (continuar == 0);
@@ -81,7 +81,7 @@ void AdicionarProdutosManualmente()
 void AdicionarProdutos()
 {
     int insercao;
-    printf("Como deseja inserir os produtos no tapete?\n 1- Manual \t 2- Automatica");
+    printf("Como deseja inserir os produtos no tapete?\n 1- Manual \t 2- Automatica\n> ");
     scanf("%d", &insercao);
     switch (insercao)
     {
@@ -96,17 +96,58 @@ void AdicionarProdutos()
     }
 }
 
+void MenuMaquinaSelecionada(Maquina *maquinaSelecionada)
+{
+    int opcao;
+    if (maquinaSelecionada == NULL)
+    {
+        printf("Maquina Invalida\n");
+        system("pause");
+        return;
+    }
+
+    do
+    {
+        printf("\n[ %s ]\n", maquinaSelecionada->Nome);
+        printf("\n1 - Embalar Produto\n");
+        printf("2 - Ver Fila\n");
+        printf("3 - Voltar\n> ");
+
+        scanf("%d", &opcao);
+
+        switch (opcao)
+        {
+        case 1:
+            printf("%s\n", EmbalarProduto(maquinaSelecionada));
+            break;
+        case 2:
+            printf("%s\n", ImprimirFila(maquinaSelecionada));
+            break;
+        default:
+            break;
+        }
+    } while (opcao != 3);
+}
+
+void MenuMaquinas()
+{
+    int opcao;
+    printf("Escolha a Maquina\n");
+    ImprimirMaquinas(listaMaquinas);
+    printf("> ");
+    scanf("%d", &opcao);
+    MenuMaquinaSelecionada(SelecionarMaquina(listaMaquinas, opcao));
+}
+
 int main()
 {
     listaMaquinas = InicializarMaquinas();
     tapeteRolante = InicializarTapete();
 
-    ImprimirTapete(tapeteRolante);
-
     int opcoes;
 
     printf("Sistema de Embalamento de Produtos\n");
-    printf("1 Iniciar simulacao\t 2 Sair do programa\n");
+    printf("1 - Iniciar simulacao\t 2 - Sair do programa\n> ");
     scanf("%d", &opcoes);
     switch (opcoes)
     {
@@ -118,4 +159,35 @@ int main()
     default:
         break;
     }
+
+    int opcoesSimulacao;
+    do
+    {
+        printf("\n\n\n_____________________________________\n\n\n1 - Encaminhar Produtos\n");
+        printf("2 - Ver Tapete\n");
+        printf("3 - Maquinas\n");
+        printf("4 - Ver Lista de Descartados\n");
+        printf("5 - Terminar Simulacao\n> ");
+
+        scanf("%d", &opcoesSimulacao);
+
+        switch (opcoesSimulacao)
+        {
+        case 1:
+            break;
+        case 2:
+            ImprimirTapete(tapeteRolante);
+            break;
+        case 3:
+            MenuMaquinas();
+            break;
+        case 4:
+            ImprimirDescartados();
+            break;
+        default:
+            break;
+        }
+    } while (opcoesSimulacao != 5);
+
+    return 0;
 }

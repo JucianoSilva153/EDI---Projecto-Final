@@ -17,12 +17,15 @@ Tapete* CarregarProdutos(Tapete* tapeteRolante)
     char nome[50];
     char tipo[50];
     float peso;
+    int count = 0;
 
     while (fscanf(ficheiro, "%s %s %f", nome, tipo, &peso) != EOF)
     {
         tapeteRolante = AdicionarProduto(tapeteRolante, CriarProduto(nome, tipo, peso));
+        count++;
     }
 
+    printf("\n%d Produtos Carregados com Sucesso\n", count);
     fclose(ficheiro);
     return tapeteRolante;
 }

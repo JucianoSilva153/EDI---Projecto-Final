@@ -3,6 +3,17 @@
 
 #include "fila.h"
 
+Fila* InicializaFila(){
+    Fila* fila = (Fila*)malloc(sizeof(Fila));
+    if(fila){
+        fila->quantidade = 0;
+        fila->inicio = NULL;
+        fila->fim = NULL;
+        return fila;
+    }
+    return NULL;
+}
+
 // Encaminha produto para uma determinada fila de uma maquina
 char *EncaminharProduto(Fila *fila, Produto *produto)
 {

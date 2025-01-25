@@ -154,3 +154,21 @@ void ImprimirTapete(Tapete *tapete)
 
     printf("\n\n%d produtos no tapete!", count);
 }
+
+void ImprimirDescartados(){
+    Descarte *aux = ListaDescarte->descarte;
+    if (aux == NULL)
+    {
+        printf("Nenhum Produto Descartado\n");
+        return;
+    }
+    printf("\nProdutos Descartados\n");
+    while (aux != NULL)
+    {
+        printf("Nome: %s\n", aux->produto->Nome);
+        printf("Tipo: %s\n", aux->produto->Tipo);
+        printf("Peso: %.2f\n", aux->produto->Peso);
+        printf("\n");
+        aux = aux->prox;
+    }
+}

@@ -17,5 +17,6 @@ typedef struct fila
 } Fila;
 
 char *EncaminharProduto(Fila *fila, Produto *produto);
+Fila* InicializaFila();
 
 #endif
