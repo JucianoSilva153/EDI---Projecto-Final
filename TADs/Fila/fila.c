@@ -15,12 +15,13 @@ Fila* InicializaFila(){
 }
 
 // Encaminha produto para uma determinada fila de uma maquina
-char *EncaminharProduto(Fila *fila, Produto *produto)
+Fila *EncaminharProduto(Fila *fila, Produto *produto)
 {
     No *novoNo = (No *)malloc(sizeof(No));
     if (novoNo == NULL)
     {
-        return "Erro ao adicionar Produto";
+        printf("Erro ao adicionar Produto a maquina");
+        return fila;
     }
 
     novoNo->Produto = produto;
@@ -38,5 +39,7 @@ char *EncaminharProduto(Fila *fila, Produto *produto)
     }
 
     fila->quantidade++;
-    return "Produto Adicionado!!";
+
+    printf("\nProduto '%s' Adicionado a Fila de maquina respectiva!\n", produto->Nome);
+    return fila;
 }

@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 
 #include "tapete.h"
 
@@ -35,7 +36,8 @@ Tapete *InicializarTapete()
 Tapete *AdicionarProduto(Tapete *tapete, Produto *novoProduto)
 {
     Tapete *novoTapete = InicializarTapete();
-    if (novoTapete == NULL){
+    if (novoTapete == NULL)
+    {
         printf("Erro ao adicionar produto ao tapete\n");
         return tapete;
     }
@@ -80,28 +82,36 @@ Tapete *AdicionarProduto(Tapete *tapete, Produto *novoProduto)
 
 // Verifica a existencia de algum produto fora do padrao
 //[ 0 - Produto Invalido | 1 - Produto Valido ]
+#include <stdio.h>
+#include <string.h>
+
 int ValidarProduto(Produto *produto)
 {
     if (produto->Peso < 0 || produto->Tipo == NULL)
     {
         return 0;
     }
-    else if (produto->Tipo != "PA" || produto->Tipo != "PB" || produto->Tipo != "PC")
+
+    // Correção da validação do tipo
+    if (strcmp(produto->Tipo, "PA") != 0 &&
+        strcmp(produto->Tipo, "PB") != 0 &&
+        strcmp(produto->Tipo, "PC") != 0)
     {
         return 0;
     }
 
-    if (produto->Tipo == "PA")
+    // Verificação do peso conforme o tipo do produto
+    if (strcmp(produto->Tipo, "PA") == 0)
     {
         if (produto->Peso > MAX_PESO_A)
             return 0;
     }
-    else if (produto->Tipo == "PB")
+    else if (strcmp(produto->Tipo, "PB") == 0)
     {
         if (produto->Peso > MAX_PESO_B)
             return 0;
     }
-    else if (produto->Tipo == "PC")
+    else if (strcmp(produto->Tipo, "PC") == 0)
     {
         if (produto->Peso > MAX_PESO_C)
             return 0;
@@ -110,28 +120,46 @@ int ValidarProduto(Produto *produto)
     return 1;
 }
 
+// Executa o encaminhamento de um produto
+int ExecutarEncaminhamento(Tapete *aux, Tapete **tapete, Maquinas **maquinas)
+{
+    if (ValidarProduto(aux->Produto) == 0)
+    {
+        // Manda produto para a Lista de descarte
+        DescartarProduto(ListaDescarte, aux->Produto);
+
+        printf("\nProduto Descartado!!\n");
+        return 1;
+    }
+
+    Maquina *maquina = RetornarMaquinaPeloProduto(*maquinas, aux->Produto->Tipo);
+    if (maquina == NULL)
+    {
+        printf("\nNenhuma Maquina Disponivel\n");
+        return 1;
+    }
+
+    maquina->Fila = EncaminharProduto(maquina->Fila, RemoverProdutoDoTapete(tapete));
+    return 0;
+}
 
 // Encaminha os produtos para as máquinas correspondentes
-char *EncaminharProdutos(Tapete *tapete, Maquinas *maquinas)
+void EncaminharProdutos(Tapete **tapete, Maquinas **maquinas)
 {
-    Tapete *aux = tapete;
-    while (aux->prox != tapete)
+    Tapete *aux = *(tapete);
+    while (aux->prox != *(tapete))
     {
-        if (ValidarProduto(aux->Produto) == 0)
+        if (ExecutarEncaminhamento(aux, tapete, maquinas) == 1)
+            break;
+        aux = aux->prox;
+        if (aux->prox == *(tapete))
         {
-            // Manda produto para a Lista de descarte
-            DescartarProduto(ListaDescarte, aux->Produto);
-            return "Produto Invalido, descartado!!";
+            if (ExecutarEncaminhamento(aux, tapete, maquinas) == 1)
+                break;
         }
-
-        Maquina *maquina = RetornarMaquinaPeloProduto(maquinas, aux->Produto->Tipo);
-        if (maquina == NULL)
-        {
-            return "Nenhuma Maquina Disponivel";
-        }
-
-        return EncaminharProduto(maquina->Fila, RemoverProdutoDoTapete(&tapete));
     }
+    printf("\nProdutos Encaminhados com sucesso!!\n");
+    system("pause");
 }
 
 // Imprime os produtos no tapete
@@ -139,27 +167,48 @@ void ImprimirTapete(Tapete *tapete)
 {
     if (tapete->Produto == NULL)
     {
-        printf("Tapete Vazio!!\n");
+        printf("\nTapete Vazio!!\n");
+        system("pause");
         return;
     }
 
     int count = 1;
     Tapete *aux = tapete;
-    while (aux->prox != tapete)
+
+    printf("\n\n---------------------------\n\n", count);
+    printf("\n\nProdutos no Tapete\n\n");
+
+    // Verifica se o tapete tem apenas um produto
+    if (aux->prox == tapete)
     {
-        printf("%d - %s | Tipo %s | Peso %f\n", count, aux->Produto->Nome, aux->Produto->Tipo, aux->Produto->Peso);
-        aux = aux->prox;
-        count++;
+        printf("%d - %s | Tipo %s | Peso %.2f\n", count, aux->Produto->Nome, aux->Produto->Tipo, aux->Produto->Peso);
+        printf("\n\n%d produtos no tapete!", count);
+        return;
     }
 
-    printf("\n\n%d produtos no tapete!", count);
+    // Imprime os produtos no tapete
+    while (aux->prox != tapete)
+    {
+        printf("%d - %s | Tipo %s | Peso %.2f\n", count, aux->Produto->Nome, aux->Produto->Tipo, aux->Produto->Peso);
+        aux = aux->prox;
+        count++;
+        if (aux->prox == tapete)
+        {
+            printf("%d - %s | Tipo %s | Peso %.2f\n", count, aux->Produto->Nome, aux->Produto->Tipo, aux->Produto->Peso);
+        }
+    }
+
+    printf("\n\n%d produtos no tapete!\n", count);
+    system("pause");
 }
 
-void ImprimirDescartados(){
+void ImprimirDescartados()
+{
     Descarte *aux = ListaDescarte->descarte;
     if (aux == NULL)
     {
-        printf("Nenhum Produto Descartado\n");
+        printf("Nenhum Produto Descartado!\n");
+        system("pause");
         return;
     }
     printf("\nProdutos Descartados\n");
@@ -171,4 +220,6 @@ void ImprimirDescartados(){
         printf("\n");
         aux = aux->prox;
     }
+
+    system("pause");
 }

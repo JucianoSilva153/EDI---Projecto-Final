@@ -16,7 +16,7 @@ typedef struct fila
     No *fim;
 } Fila;
 
-char *EncaminharProduto(Fila *fila, Produto *produto);
+Fila *EncaminharProduto(Fila *fila, Produto *produto);
 Fila* InicializaFila();
 
 #endif

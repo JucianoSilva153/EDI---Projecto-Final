@@ -158,7 +158,6 @@ void ImprimirMaquinas(Maquinas *maquinas)
 
         if (aux->prox == NULL)
         {
-            count++;
             printf("%d - %s | Tipo %s | Produtos Embalados %d\n", count, aux->Maquina->Nome, aux->Maquina->Tipo, aux->Maquina->ProdutosEmbalados);
             break;
         }
@@ -179,6 +178,17 @@ Maquina *SelecionarMaquina(Maquinas *maquinas, int posicao)
         }
         count++;
         aux = aux->prox;
+
+        if (aux->prox == NULL)
+        {
+            if (count == posicao)
+            {
+                if (aux->Maquina == NULL)
+                    return NULL;
+                return aux->Maquina;
+            }
+            break;
+        }
     }
 
     return NULL;
@@ -187,6 +197,9 @@ Maquina *SelecionarMaquina(Maquinas *maquinas, int posicao)
 // Imprime a fila de uma maquina
 char *ImprimirFila(Maquina *maquina)
 {
+
+    printf("\n\n--------------------------------------\n\n");
+    printf("[ Fila - %s ]\n", maquina->Nome);
     if (maquina->Fila->quantidade == 0)
     {
         return "Fila Vazia";
@@ -194,11 +207,24 @@ char *ImprimirFila(Maquina *maquina)
 
     int count = 1;
     No *aux = maquina->Fila->inicio;
+
+    // Verifica se a fila tem apenas um produto
+    if (maquina->Fila->inicio->prox == NULL)
+    {
+        printf("%d - %s | Tipo %s | Peso %.2f\n", count, aux->Produto->Nome, aux->Produto->Tipo, aux->Produto->Peso);
+        return "Fila de espera Impressa";
+    }
+
     while (aux->prox != NULL)
     {
-        printf("Produto-%d | Tipo %s | Peso %f\n", count, aux->Produto->Tipo, aux->Produto->Peso);
+        printf("%d - %s | Tipo %s | Peso %.2f\n", count, aux->Produto->Nome, aux->Produto->Tipo, aux->Produto->Peso);
         count++;
         aux = aux->prox;
+        if (aux->prox == NULL)
+        {
+            printf("%d - %s | Tipo %s | Peso %.2f\n", count, aux->Produto->Nome, aux->Produto->Tipo, aux->Produto->Peso);
+            break;
+        }
     }
 
     return "Fila de espera Impressa";

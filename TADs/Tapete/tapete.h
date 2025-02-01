@@ -16,7 +16,7 @@ Tapete* InicializarTapete();
 
 Tapete* AdicionarProduto(Tapete* tapete, Produto* produto);
 int ValidarProduto( Produto* produto);
-char* EncaminharProdutos(Tapete* tapete, Maquinas *maquinas);
+void EncaminharProdutos(Tapete **tapete, Maquinas **maquinas);
 void ImprimirTapete(Tapete* tapete);
 
 void ImprimirDescartados();

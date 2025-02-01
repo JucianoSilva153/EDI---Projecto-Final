@@ -11,33 +11,33 @@ Maquina *RetornarMaquinaPeloProduto(Maquinas *maquinas, char *tipoProduto)
     Maquinas *aux = maquinas;
 
     // Verifica o tipo de produto e dado esse tipo de produto, filtra as maquina correspentes em listaMaquinas declarado acima
-    if (tipoProduto == "PA")
+    if (strcmp(tipoProduto, "PA") == 0)
     {
         while (aux->prox != NULL)
         {
-            if (aux->Maquina->Tipo == "MA")
+            if (strcmp(aux->Maquina->Tipo, "MA") == 0)
             {
                 listaMaquinas = AdicionarMaquina(listaMaquinas, aux->Maquina);
             }
             aux = aux->prox;
         }
     }
-    else if (tipoProduto == "PB")
+    else if (strcmp(tipoProduto, "PB") == 0)
     {
         while (aux->prox != NULL)
         {
-            if (aux->Maquina->Tipo == "MB")
+            if (strcmp(aux->Maquina->Tipo, "MB") == 0)
             {
                 listaMaquinas = AdicionarMaquina(listaMaquinas, aux->Maquina);
             }
             aux = aux->prox;
         }
     }
-    else if (tipoProduto == "PC")
+    else if (strcmp(tipoProduto, "PC") == 0)
     {
         while (aux->prox != NULL)
         {
-            if (aux->Maquina->Tipo == "MC")
+            if (strcmp(aux->Maquina->Tipo, "MC") == 0)
             {
                 listaMaquinas = AdicionarMaquina(listaMaquinas, aux->Maquina);
             }
@@ -50,6 +50,13 @@ Maquina *RetornarMaquinaPeloProduto(Maquinas *maquinas, char *tipoProduto)
     Maquina *maquinaMenorFila = InicializarMaquina();
     maquinaMenorFila->Fila->quantidade = INT_MAX;
 
+    // verifica se a lista de maquinas filtradas tem apenas uma maquina
+    if (aux2->prox == NULL)
+    {
+        return aux2->Maquina;
+    }
+
+    // Encontra a maquina com a menor fila
     while (aux2->prox != NULL)
     {
         if (maquinaMenorFila->Fila->quantidade > aux2->Maquina->Fila->quantidade)
@@ -57,6 +64,14 @@ Maquina *RetornarMaquinaPeloProduto(Maquinas *maquinas, char *tipoProduto)
             maquinaMenorFila = aux2->Maquina;
         }
         aux2 = aux2->prox;
+
+        if (aux2->prox == NULL)
+        {
+            if (maquinaMenorFila->Fila->quantidade > aux2->Maquina->Fila->quantidade)
+            {
+                maquinaMenorFila = aux2->Maquina;
+            }
+        }
     }
 
     return maquinaMenorFila;
@@ -74,10 +89,13 @@ Produto *RemoverProdutoDoTapete(Tapete **tapete)
 
     if ((*tapete)->prox == (*tapete))
     {
-        Produto *produtoRemovido = (*tapete)->Produto; // Salva o produto
-        free(tapete);                               // Libera a memória
-        tapete = NULL;                              // Atualiza o ponteiro para NULL
-        return produtoRemovido;                     // Retorna o produto
+        Produto *produtoRemovido = (*tapete)->Produto; // Salva o produto a ser removido!
+
+        // Esvazia o Tapete!!
+        (*tapete)->Produto = NULL;
+        (*tapete)->prox = (*tapete);
+
+        return produtoRemovido; // Retorna o produto
     }
     else
     {
@@ -91,8 +109,7 @@ Produto *RemoverProdutoDoTapete(Tapete **tapete)
         Tapete *temp = (*tapete);             // Nó atual a ser removido
 
         ultimo->prox = (*tapete)->prox; // Atualiza o próximo do último nó
-        (*tapete) = (*tapete)->prox;       // Move o início do tapete para o próximo nó
-        free(temp);                  // Libera o nó atual
+        (*tapete) = (*tapete)->prox;    // Move o início do tapete para o próximo nó
     }
 
     return produtoRemovido;

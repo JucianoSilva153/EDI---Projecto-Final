@@ -20,6 +20,9 @@ Tapete *tapeteRolante;
 
 void AdicionarMaquinas()
 {
+    system("cls");
+
+    printf("1 - Adicionando Maquinas: \n\n");
     int QuantidadeMA, QuantidadeMB, QuantidadeMC;
     printf("Quantas maquinas do tipo A: ");
     scanf("%d", &QuantidadeMA);
@@ -44,6 +47,7 @@ void AdicionarMaquinas()
     }
 
     printf("\nMaquinas Configuradas com Sucesso\n\n");
+    system("pause");
 }
 
 void AdicionarProdutosAutomaticamente()
@@ -80,8 +84,11 @@ void AdicionarProdutosManualmente()
 
 void AdicionarProdutos()
 {
+    system("cls");
+
     int insercao;
-    printf("Como deseja inserir os produtos no tapete?\n 1- Manual \t 2- Automatica\n> ");
+    printf("2 - Adicionando Produtos ao Tapete Rolante: \n\n> ");
+    printf("Como deseja inserir os produtos no tapete?\n1- Manual\t2- Automatica\n> ");
     scanf("%d", &insercao);
     switch (insercao)
     {
@@ -108,7 +115,9 @@ void MenuMaquinaSelecionada(Maquina *maquinaSelecionada)
 
     do
     {
-        printf("\n[ %s ]\n", maquinaSelecionada->Nome);
+        system("cls");
+
+        printf("\n[ %s ]\n\nProdutos Embalados: %d\n\n", maquinaSelecionada->Nome, maquinaSelecionada->ProdutosEmbalados);
         printf("\n1 - Embalar Produto\n");
         printf("2 - Ver Fila\n");
         printf("3 - Voltar\n> ");
@@ -119,9 +128,11 @@ void MenuMaquinaSelecionada(Maquina *maquinaSelecionada)
         {
         case 1:
             printf("%s\n", EmbalarProduto(maquinaSelecionada));
+            system("pause");
             break;
         case 2:
             printf("%s\n", ImprimirFila(maquinaSelecionada));
+            system("pause");
             break;
         default:
             break;
@@ -132,11 +143,18 @@ void MenuMaquinaSelecionada(Maquina *maquinaSelecionada)
 void MenuMaquinas()
 {
     int opcao;
-    printf("Escolha a Maquina\n");
-    ImprimirMaquinas(listaMaquinas);
-    printf("> ");
-    scanf("%d", &opcao);
-    MenuMaquinaSelecionada(SelecionarMaquina(listaMaquinas, opcao));
+    do
+    {
+        system("cls");
+
+        printf("Escolha a Maquina (0 - Voltar)\n");
+        ImprimirMaquinas(listaMaquinas);
+        printf("> ");
+        scanf("%d", &opcao);
+        system("cls");
+        if (opcao != 0)
+            MenuMaquinaSelecionada(SelecionarMaquina(listaMaquinas, opcao));
+    } while (opcao != 0);
 }
 
 int main()
@@ -155,15 +173,23 @@ int main()
         AdicionarMaquinas();
         AdicionarProdutos();
         break;
+    case 2:
+        printf("Saindo do programa...\n");
+        return 0;
+        break;
 
     default:
         break;
     }
 
+    system("cls");
+
     int opcoesSimulacao;
     do
     {
-        printf("\n\n\n_____________________________________\n\n\n1 - Encaminhar Produtos\n");
+        system("cls");
+
+        printf("[ Menu Principal ]\n\n1 - Encaminhar Produtos\n");
         printf("2 - Ver Tapete\n");
         printf("3 - Maquinas\n");
         printf("4 - Ver Lista de Descartados\n");
@@ -174,6 +200,7 @@ int main()
         switch (opcoesSimulacao)
         {
         case 1:
+            EncaminharProdutos(&tapeteRolante, &listaMaquinas);
             break;
         case 2:
             ImprimirTapete(tapeteRolante);
